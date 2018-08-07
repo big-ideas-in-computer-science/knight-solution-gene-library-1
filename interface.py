@@ -64,7 +64,7 @@ class IndividualGene:
                 if parent1[i] == parent2[j]:
                     child_gene = parent1[0:i] + parent2[j:len(parent2)]
                     break
-        if child_gene == None:
+        if child_gene is None:
             return self.mutate()
         grid = create_grid(self.configuration.board_size)
         last_gene = None
