@@ -26,7 +26,15 @@ def check_area(x,y,grid):
         return None
     else:
         return random.sample(valid, 1)[0]
-        
+
+
+def common_point(parent1, parent2):
+    for i in range(1,len(parent1)):
+        for j in range(1,len(parent2)):
+            if parent1[i] == parent2[j]:
+                child_gene = parent1[0:i] + parent2[j:len(parent2)]
+                return child_gene
+    return None
     
 class IndividualGene:
     #for the initial position chose a random start position
@@ -56,14 +64,9 @@ class IndividualGene:
 #crossover is the product of the replication of one line until the first shared position and replication the second line
     #  from that moment on until the second shared number
     def crossover(self, other):
-        child_gene = None 
         parent1 = self.gene
         parent2 = other.gene
-        for i in range(1,len(parent1)):
-            for j in range(1,len(parent2)):
-                if parent1[i] == parent2[j]:
-                    child_gene = parent1[0:i] + parent2[j:len(parent2)]
-                    break
+        child_gene = common_point(parent1, parent2)
         if child_gene is None:
             return self.mutate()
         grid = create_grid(self.configuration.board_size)
@@ -76,7 +79,7 @@ class IndividualGene:
                 break
         self.fill_path()
 
-    
+
 #number of steps that follow the rule
     def fitness(self):
         return len(self.gene)
