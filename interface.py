@@ -33,6 +33,7 @@ class IndividualGene:
     def __init__(self, configuration):
         self.configuration = configuration
         self.gene = [(configuration.start_row,configuration.start_col)]
+        self.fill_path()
         
     def fill_path(self):
         grid = create_grid(self.configuration.board_size)
@@ -55,7 +56,24 @@ class IndividualGene:
 #crossover is the product of the replication of one line until the first shared position and replication the second line
     #  from that moment on until the second shared number
     def crossover(self, other):
-        self.mutate()
+        child_gene = []
+        parent1 = self.gene
+        parent2 = other.gene
+        for i in range(1,len(parent1)):
+            for j in range(1,len(parent2)):
+                if parent1[i] == parent2[j]:
+                    child_gene = parent1[0:i] + parent2[j:len(parent2)]
+                    break
+        grid = create_grid(self.configuration.board_size)
+        last_gene = None
+        for index, step in enumerate(child_gene):
+            if grid[step[0] -1][step[1] -1] is False:
+                grid[step[0] -1][step[1] -1] = True
+            else:
+                child_gene = child_gene[0:index]
+                break
+        self.fill_path()
+
     
 #number of steps that follow the rule
     def fitness(self):
