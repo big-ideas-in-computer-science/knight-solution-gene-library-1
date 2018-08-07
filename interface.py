@@ -56,7 +56,7 @@ class IndividualGene:
 #crossover is the product of the replication of one line until the first shared position and replication the second line
     #  from that moment on until the second shared number
     def crossover(self, other):
-        child_gene = []
+        child_gene = None 
         parent1 = self.gene
         parent2 = other.gene
         for i in range(1,len(parent1)):
@@ -64,6 +64,8 @@ class IndividualGene:
                 if parent1[i] == parent2[j]:
                     child_gene = parent1[0:i] + parent2[j:len(parent2)]
                     break
+        if child_gene == None:
+            return self.mutate()
         grid = create_grid(self.configuration.board_size)
         last_gene = None
         for index, step in enumerate(child_gene):
